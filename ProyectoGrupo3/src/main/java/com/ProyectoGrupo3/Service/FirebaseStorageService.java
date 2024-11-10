@@ -7,6 +7,7 @@ package com.ProyectoGrupo3.Service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Service
 public interface FirebaseStorageService {
     
     public String cargaImagen(MultipartFile archivoLocalCliente, String carpeta, Long id);
@@ -15,7 +16,7 @@ public interface FirebaseStorageService {
     final String BucketName = "techshop-07262.appspot.com";
     
     //Esta es la ruta básica de este proyecto Techshop
-    final String rutaSuperiorStorage = "tiendadevideojuegos";
+    final String rutaSuperiorStorage = "techshop";
     
     //Ubicación donde se encuentra el archivo de configuración Json
     final String rutaJsonFile = "firebase";

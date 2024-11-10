@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FirebaseStorageServiceImpl implements FirebaseStorageService {
     
-       @Override
+   @Override
    public String cargaImagen(MultipartFile archivoLocalCliente, String carpeta, Long id) {
        try {
            //El nombre original del archivo local del cliente
@@ -88,5 +88,4 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
    private String sacaNumero(long id) {
        return String.format("%019d", id);
    }
-    
 }
