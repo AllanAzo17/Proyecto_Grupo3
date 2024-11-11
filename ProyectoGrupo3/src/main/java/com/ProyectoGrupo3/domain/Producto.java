@@ -5,6 +5,7 @@
 package com.ProyectoGrupo3.domain;
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -31,6 +32,8 @@ public class Producto implements Serializable {
     @JoinColumn(name="id_categoria")
     Categoria categoria;
 
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Resena> resenas;
     
     public Producto() {
     }

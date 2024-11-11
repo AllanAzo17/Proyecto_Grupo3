@@ -47,6 +47,12 @@ public class ProductoServiceImpl implements ProductoService {
         productoDao.delete(producto);
     }
     
+     @Override
+    @Transactional(readOnly = true)
+    public Producto getProductoById(Long idProducto) {
+        return productoDao.findById(idProducto).orElse(null);
+    }
+    
 }
     
 

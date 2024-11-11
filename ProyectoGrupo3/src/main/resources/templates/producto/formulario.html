@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/plantilla :: head}">
+    <meta charset="UTF-8">
+    <title>Agregar Reseña</title>
+</head>
+<body>
+          <header th:replace="~{layout/plantilla :: header}"/>
+    <h2>Agregar Reseña para [[${producto.descripcion}]]</h2>
+    <form th:action="@{/producto/resenas/guardar}" th:object="${resena}" method="post">
+        <input type="hidden" th:name="idProducto" th:value="${producto.idProducto}" />
+        
+        <label>Calificación:</label>
+        <input type="number" th:field="*{calificacion}" min="1" max="5" required />
+
+        <label>Comentario:</label>
+        <textarea th:field="*{comentario}" required></textarea>
+        
+        <button type="submit">Guardar Reseña</button>
+    </form>
+    <footer th:replace="~{layout/plantilla :: footer}"/>
+</body>
+</html>

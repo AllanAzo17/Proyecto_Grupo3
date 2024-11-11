@@ -6,35 +6,34 @@ package com.ProyectoGrupo3.domain;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import lombok.Data;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name="categoria")
-
-public class Categoria implements Serializable {
-    
+@Table(name="resena")
+public class Resena implements Serializable{
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_categoria")
-    private Long idCategoria;
-    private String descripcion;
-    private boolean activo;
+    @Column(name = "id_resena")
+    private Long idResena;
+    private int calificacion;
+    private String comentario;
     
-
-    public Categoria() {
-        
+    private Date fecha;
+    
+    @ManyToOne
+@JoinColumn(name="id_producto")
+Producto producto;
+   
+    public Resena() {
     }
-@OneToMany
-    @JoinColumn(name="id_categoria")
-    List<Producto> productos;
-
-    public Categoria(String categoria, boolean activo) {
-        this.descripcion = categoria;
-        this.activo = activo;
+ 
+    public Resena (Producto producto) {
+        this.producto = producto;
     }
+    
     
 }
