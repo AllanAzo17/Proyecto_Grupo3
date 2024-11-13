@@ -13,10 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-
 public class ProductoServiceImpl implements ProductoService {
-    
-         @Autowired
+
+     @Autowired
     private ProductoDao productoDao;
 
     @Override
@@ -36,6 +35,11 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Producto getProductoById(Long idProducto) {
+        return productoDao.findById(idProducto).orElse(null);
+    }
+    @Override
     @Transactional
     public void save(Producto producto) {
         productoDao.save(producto);
@@ -47,12 +51,6 @@ public class ProductoServiceImpl implements ProductoService {
         productoDao.delete(producto);
     }
     
-     @Override
-    @Transactional(readOnly = true)
-    public Producto getProductoById(Long idProducto) {
-        return productoDao.findById(idProducto).orElse(null);
-    }
     
 }
-    
 

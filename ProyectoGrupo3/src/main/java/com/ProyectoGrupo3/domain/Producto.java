@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.ProyectoGrupo3.domain;
+
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -11,16 +12,13 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="producto")
-
 public class Producto implements Serializable {
-    
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_producto")
     private Long idProducto;
-    //private Long idCategoria;  ya no se usa por el @manyToOne
     private String descripcion;
     private String detalle;
     private double precio;
@@ -32,11 +30,13 @@ public class Producto implements Serializable {
     @JoinColumn(name="id_categoria")
     Categoria categoria;
 
-    @OneToMany(mappedBy = "producto")
-            List<Resena> resenas;
     
+    @OneToMany(mappedBy = "producto")
+    private List<Resena> resenas;
+
+
     public Producto() {
-    }
+    }   
 
     public Producto(String descripcion, boolean activo) {
         this.descripcion = descripcion;
