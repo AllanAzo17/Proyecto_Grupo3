@@ -32,8 +32,8 @@ public class Producto implements Serializable {
     @JoinColumn(name="id_categoria")
     Categoria categoria;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Resena> resenas;
+    @OneToMany(mappedBy = "producto")
+            List<Resena> resenas;
     
     public Producto() {
     }
