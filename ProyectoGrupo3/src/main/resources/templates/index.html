@@ -1,17 +1,38 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml">
-    <head th:replace="~{layout/plantilla :: head}">
-        <title>TiendadeVideojuegos</title>        
-    </head>
-    <body>
-        <header th:replace="~{layout/plantilla :: header}"/>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout/plantilla :: head}">
+    <title>TiendadeVideojuegos</title>        
+</head>
+<body>
+    <header th:replace="~{layout/plantilla :: header}"/>
+    
+    <!-- Contenido Principal -->
+    <main>
+        <section>
+            <h1>Descubre un mundo de aventuras</h1>
+            <p>Encuentra los mejores videojuegos para todas las plataformas y disfruta de las mejores ofertas.</p>
+        </section>
         
-        <footer th:replace="~{layout/plantilla :: footer}"/>          
-    </body>
+        <!-- Iframe de Tienda de Videojuegos -->
+        <section>
+            <h2>Explora nuestro catálogo</h2>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/2KROCZ1q4OE?si=19lZ6SYaIRAil6MO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <p>Visita nuestra tienda para ver más detalles sobre los videojuegos más recientes y en oferta.</p>
+        </section>
+
+        <!-- Información de Ventas -->
+        <section>
+            <h2>Información de Venta de Videojuegos</h2>
+            <p>Ofrecemos videojuegos en formatos físico y digital para todas las plataformas. Compra hoy y recibe
+               beneficios exclusivos como descuentos, contenido adicional, y mucho más.</p>
+            <ul>
+                <li>Descuentos especiales para miembros registrados.</li>
+                <li>Envíos gratis en compras superiores a $50.</li>
+                <li>Preventa de los juegos más esperados del año.</li>
+            </ul>
+        </section>
+    </main>
+    
+    <footer th:replace="~{layout/plantilla :: footer}"/>          
+</body>
 </html>

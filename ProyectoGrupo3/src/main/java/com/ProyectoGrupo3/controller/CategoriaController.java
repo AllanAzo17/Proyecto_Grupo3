@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/categoria")
 public class CategoriaController {
     
-        @Autowired
+    @Autowired
     private CategoriaService categoriaService;
 
     @GetMapping("/listado")
@@ -51,5 +51,4 @@ public class CategoriaController {
         model.addAttribute("categoria", categoria);
         return "/categoria/modifica";
     }
-    
 }
