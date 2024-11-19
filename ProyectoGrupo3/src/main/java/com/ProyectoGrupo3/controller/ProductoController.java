@@ -49,6 +49,13 @@ public class ProductoController {
     public String productoNuevo(Producto producto) {
         return "/producto/modifica";
     }
+    
+    @GetMapping("/detalle/{idProducto}")
+    public String verDetallesProducto(@PathVariable Long idProducto, Model model) {
+    Producto producto = productoService.getProductoById(idProducto);
+    model.addAttribute("producto", producto);
+    return "producto/detalle"; // Vista de solo lectura para los detalles del producto
+}
 
     @Autowired
     private FirebaseStorageServiceImpl firebaseStorageService;
@@ -85,46 +92,49 @@ public class ProductoController {
         return "/producto/modifica";
     }   
     
-@GetMapping("/resenas/{idProducto}")
-public String verResenas(@PathVariable("idProducto") Long idProducto, Model model) {
+    @GetMapping("/resenas/{idProducto}")
+    public String verResenas(@PathVariable("idProducto") Long idProducto, Model model) {
     // Obtiene el producto por su ID
     Producto producto = productoService.getProductoById(idProducto);
     
     // Obtiene la lista de reseñas asociadas al producto
     List<Resena> resenas = producto.getResenas();
+
+    // Calcula el promedio de calificación
+    Double promedioCalificacion = resenaService.obtenerPromedioCalificacionPorProducto(idProducto);
     
-    // Agrega el producto y las reseñas al modelo para que estén disponibles en la vista
+    // Agrega el producto, las reseñas y el promedio al modelo
     model.addAttribute("producto", producto);
     model.addAttribute("resenas", resenas);
+    model.addAttribute("promedioCalificacion", promedioCalificacion != null ? promedioCalificacion : "No hay reseñas");
     
     // Retorna la vista donde se mostrarán las reseñas del producto
     return "producto/resenas";
 }
 
-   // Método para mostrar el formulario para agregar una reseña
     @GetMapping("/resenas/agregar/{idProducto}")
     public String mostrarFormularioAgregar(@PathVariable Long idProducto, Model model) {
         Producto producto = productoService.getProductoById(idProducto);
         model.addAttribute("producto", producto);
         model.addAttribute("resena", new Resena());
-        return "producto/formulario"; // Vista del formulario de agregar reseña
+        return "producto/formulario"; 
     }
 
-    // Método para guardar la reseña en la base de datos
     @PostMapping("/resenas/guardar")
     public String guardarResena(Resena resena, @RequestParam Long idProducto) {
         Producto producto = productoService.getProductoById(idProducto);
         resena.setProducto(producto);
-        resena.setFecha(new Date()); // Asigna la fecha actual
+        resena.setFecha(new Date()); 
         resenaService.save(resena);
-        return "redirect:/producto/resenas/" + idProducto; // Redirige a la vista de reseñas del producto
+        return "redirect:/producto/resenas/" + idProducto; 
     }
 
-    // Método para borrar una reseña
     @GetMapping("/resenas/eliminar/{idResena}")
     public String eliminarResena(@PathVariable Long idResena, @RequestParam Long idProducto) {
         resenaService.delete(idResena);
-        return "redirect:/producto/resenas/" + idProducto; // Redirige a la vista de reseñas del producto
+        return "redirect:/producto/resenas/" + idProducto; 
     }
+    
+    
 
 }
