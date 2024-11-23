@@ -49,6 +49,13 @@ public class ProductoController {
     public String productoNuevo(Producto producto) {
         return "/producto/modifica";
     }
+    
+    @GetMapping("/detalle/{idProducto}")
+    public String verDetallesProducto(@PathVariable Long idProducto, Model model) {
+    Producto producto = productoService.getProductoById(idProducto);
+    model.addAttribute("producto", producto);
+    return "producto/detalle"; // Vista de solo lectura para los detalles del producto
+}
 
     @Autowired
     private FirebaseStorageServiceImpl firebaseStorageService;
@@ -92,10 +99,14 @@ public String verResenas(@PathVariable("idProducto") Long idProducto, Model mode
     
   
     List<Resena> resenas = producto.getResenas();
+
+    // Calcula el promedio de calificación
+    Double promedioCalificacion = resenaService.obtenerPromedioCalificacionPorProducto(idProducto);
     
     
     model.addAttribute("producto", producto);
     model.addAttribute("resenas", resenas);
+    model.addAttribute("promedioCalificacion", promedioCalificacion != null ? promedioCalificacion : "No hay reseñas");
     
 
     return "producto/resenas";
@@ -124,5 +135,7 @@ public String verResenas(@PathVariable("idProducto") Long idProducto, Model mode
         resenaService.delete(idResena);
         return "redirect:/producto/resenas/" + idProducto; 
     }
+    
+    
 
 }
