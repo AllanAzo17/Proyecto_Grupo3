@@ -22,13 +22,13 @@
             </div>
         </section>
 
-         <!-- 2 Sección principal para mostrar la informaccion de la entidad producto -->
         <section th:fragment="listadoProductos" id="productos">
-    <div class="row row-cols-4">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        <!-- Productos -->
         <div class="col mb-4" th:each="p : ${productos}">
             <div class="card h-100">
                 <figure>
-                    <img th:src="${p.rutaImagen}" class="card-img-top" alt="Imagen del producto" height="200"/>
+                    <img th:src="${p.rutaImagen}" class="card-img-top" alt="Imagen del producto" style="height: 150px; object-fit: cover;" />
                     <figcaption>¢[[${p.precio}]] ([[${p.existencias}]])</figcaption>
                 </figure>
                 <div class="card-header">
@@ -50,7 +50,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Controles de paginación -->
+    <div class="row mt-4">
+        <div class="col text-center">
+            <nav aria-label="Paginación">
+                <ul class="pagination justify-content-center">
+                    <!-- Botón Anterior -->
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/pruebas/listado(page=${currentPage - 1}, size=${size})}">Anterior</a>
+                    </li>
+
+                    <!-- Números de página -->
+                    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'" class="page-item">
+                        <a class="page-link" th:href="@{/pruebas/listado(page=${i}, size=${size})}" th:text="${i + 1}"></a>
+                    </li>
+
+                    <!-- Botón Siguiente -->
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/pruebas/listado(page=${currentPage + 1}, size=${size})}">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </section>
+
 
 
     </body>

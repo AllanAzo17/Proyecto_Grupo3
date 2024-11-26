@@ -9,6 +9,8 @@ import com.ProyectoGrupo3.domain.Producto;
 import com.ProyectoGrupo3.Service.ProductoService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +53,15 @@ public class ProductoServiceImpl implements ProductoService {
         productoDao.delete(producto);
     }
     
+    @Override
+@Transactional(readOnly = true)
+public Page<Producto> getProductosPaginados(Pageable pageable, boolean activo) {
+    var page = productoDao.findAll(pageable);
+    if (activo) {
+        page.getContent().removeIf(e -> !e.isActivo());
+    }
+    return page;
+}
     
 }
 

@@ -6,20 +6,21 @@ package com.ProyectoGrupo3.Service;
 
 import com.ProyectoGrupo3.domain.Producto;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductoService {
-    
+
     public List<Producto> getProductos(boolean activo);
 
-    // Se obtiene un Producto, a partir del id de un producto
     public Producto getProducto(Producto producto);
-    
-    // Se inserta un nuevo producto si el id del producto esta vacío
-    // Se actualiza un producto si el id del producto NO esta vacío
+
     public void save(Producto producto);
-    
-    // Se elimina el producto que tiene el id pasado por parámetro
+
     public void delete(Producto producto);
-    
+
     public Producto getProductoById(Long idProducto);
+
+    // Nuevo método para obtener productos paginados
+    public Page<Producto> getProductosPaginados(Pageable pageable, boolean activo);
 }

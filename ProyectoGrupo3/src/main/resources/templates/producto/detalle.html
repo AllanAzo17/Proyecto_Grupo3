@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/plantilla :: head}">
     <meta charset="UTF-8">
     <title>Detalles del Producto</title>
 </head>
 <body>
-     <header th:replace="~{layout/plantilla :: header}"/>
+    <header th:replace="~{layout/plantilla :: header}"/>
     <div class="container">
         <h2>Detalles de [[${producto.descripcion}]]</h2>
 
@@ -20,9 +21,19 @@
             <img th:src="${producto.rutaImagen}" alt="Imagen del producto" style="max-width: 300px;"/>
         </div>
 
-        <!-- Botón para volver a la lista de productos -->
+        <!-- Botones de acción -->
         <div class="text-center mt-4">
+            <!-- Botón para volver a la lista de productos -->
             <a th:href="@{/producto/listado}" class="btn btn-primary">Volver a Productos</a>
+
+            <!-- Botón para agregar a favoritos -->
+            <form th:action="@{/favoritos/agregar/{idProducto}(idProducto=${producto.idProducto})}" 
+                  method="post" 
+                  class="d-inline">
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="fas fa-heart"></i> Agregar a Favoritos
+                </button>
+            </form>
         </div>
     </div>
     <footer th:replace="~{layout/plantilla :: footer}"/>

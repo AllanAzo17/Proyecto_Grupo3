@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-    <body>
-        <!-- 1 Sección para crear el boton de agregar... llamará a una ventana modal-->
+<body>
+ <!-- 1 Sección para crear el boton de agregar... llamará a una ventana modal-->
         <section th:fragment="botonesAgregar" class="py-4 mb-4 bg-light">
             <div class="container">
                 <div class="row">
@@ -91,58 +90,79 @@
             </div>
         </section>
 
-<section th:fragment="listadoProductos" id="productos">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>[[#{producto.listado}]]</h4>
-                    </div>
-                    <div th:if="${productos != null and !productos.empty}">
-                        <table class="table table-striped table-hover">
-                            <thead class="table-dark">
-                                <tr><th>#</th>
-                                    <th class="text-center">[[#{producto.descripcion}]]</th>
-                                    <th class="text-center">[[#{producto.precio}]]</th>
-                                    <th class="text-center">[[#{producto.existencias}]]</th>
-                                    
-                                    <th class="text-center">[[#{producto.activo}]]</th>
-                                    <th class="text-center">[[#{producto.categoria}]]</th>
-                                    <th></th><th></th><th>Reseñas</th></tr>
-                            </thead>
-                            <tbody>
-    <tr th:each="producto, contador : ${productos}">
-        <td class="text-center">[[${contador.count}]]</td>
-        <td class="fs-6">[[${producto.descripcion}]]</td>
-        <td class="text-end">[[${#numbers.formatDecimal(producto.precio, 1, 'DEFAULT', 2, 'DEFAULT')}]]</td>
-        <td class="text-center">[[${producto.existencias}]]</td>
-        <td class="text-center" th:text="${producto.activo} ? 'Activa' : 'Inactiva'" />
-        <td>[[${producto.categoria.descripcion}]]</td>
+    <!-- Listado de Productos -->
+    <section th:fragment="listadoProductos" id="productos">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>[[#{producto.listado}]]</h4>
+                        </div>
+                        <div th:if="${productos != null and !productos.empty}">
+                            <table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th class="text-center">Imagen</th>
+            <th class="text-center">[[#{producto.descripcion}]]</th>
+            <th class="text-center">[[#{producto.precio}]]</th>
+            <th class="text-center">[[#{producto.existencias}]]</th>
+            <th class="text-center">[[#{producto.activo}]]</th>
+            <th class="text-center">[[#{producto.categoria}]]</th>
+            <th class="text-center">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="producto, contador : ${productos}">
+            <td class="text-center">[[${contador.count}]]</td>
+            <!-- Columna para la imagen -->
+            <td class="text-center">
+                <img th:src="@{${producto.rutaImagen}}" alt="Imagen del producto" height="100" width="100" class="img-thumbnail">
+            </td>
+            <td class="fs-6">[[${producto.descripcion}]]</td>
+            <td class="text-end">[[${#numbers.formatDecimal(producto.precio, 1, 'DEFAULT', 2, 'DEFAULT')}]]</td>
+            <td class="text-center">[[${producto.existencias}]]</td>
+            <td class="text-center" th:text="${producto.activo} ? 'Activa' : 'Inactiva'" />
+            <td>[[${producto.categoria.descripcion}]]</td>
+<td>
+    <div class="d-flex justify-content-center gap-2">
+        <!-- Botón Ver Detalles -->
+        <a th:href="@{/producto/detalle/}+${producto.idProducto}" class="btn btn-secondary btn-sm" 
+           sec:authorize="hasRole('USER')">
+            <i class="fas fa-eye"></i> Ver Detalles
+        </a>
         
-        <td>
-            <a th:href="@{/producto/detalle/}+${producto.idProducto}" class="btn btn-secondary">
-                <i class="fas fa-eye"></i> Ver Detalles
-            </a>
-        </td>
+        <!-- Botón Ver Reseña -->
+        <a th:href="@{/producto/resenas/}+${producto.idProducto}" class="btn btn-info btn-sm" 
+           sec:authorize="hasRole('USER')">
+            <i class="fas fa-comments"></i> Ver Reseña
+        </a>
+    </div>
+</td>
+<td sec:authorize="hasRole('ADMIN')">
+    <div class="d-flex justify-content-center gap-2">
+        <!-- Botón Eliminar -->
+        <a th:href="@{/producto/eliminar/}+${producto.idProducto}" class="btn btn-danger btn-sm">
+            <i class="fas fa-trash"></i> [[#{accion.eliminar}]]
+        </a>
 
-        <td>
-            <a th:href="@{/producto/eliminar/}+${producto.idProducto}" class="btn btn-danger">
-                <i class="fas fa-trash"></i> [[#{accion.eliminar}]]
-            </a>
-        </td>
-        <td>
-            <a th:href="@{/producto/modificar/}+${producto.idProducto}" class="btn btn-success">
-                <i class="fas fa-pencil"></i> [[#{accion.actualizar}]]
-            </a>
-        </td>
-        <td>
-            <a th:href="@{/producto/resenas/}+${producto.idProducto}" class="btn btn-info">
-                <i class="fas fa-comments"></i> Ver Reseñas
-            </a>
-        </td>
-    </tr>
-</tbody>
+        <!-- Botón Modificar -->
+        <a th:href="@{/producto/modificar/}+${producto.idProducto}" class="btn btn-success btn-sm">
+            <i class="fas fa-pencil"></i> [[#{accion.actualizar}]]
+        </a>
+    </div>
+</td>
+        </tr>
+    </tbody>
+</table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
 
                         </table>
                     </div>
