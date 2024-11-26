@@ -6,8 +6,7 @@ package com.ProyectoGrupo3.Service;
 
 import com.ProyectoGrupo3.domain.Producto;
 import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 
 public interface ProductoService {
 
@@ -21,6 +20,4 @@ public interface ProductoService {
 
     public Producto getProductoById(Long idProducto);
 
-    // Nuevo método para obtener productos paginados
-    public Page<Producto> getProductosPaginados(Pageable pageable, boolean activo);
 }

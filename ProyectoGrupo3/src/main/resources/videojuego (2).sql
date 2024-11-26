@@ -41,12 +41,21 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 INSERT INTO producto (id_producto, id_categoria, descripcion, detalle, precio, existencias, ruta_imagen, activo) VALUES 
-(1, 1, 'Cyberpunk 2077', 'Juego de acción y aventura en un mundo abierto en Night City', 59.99, 100,'https://img2.wallspic.com/previews/7/3/0/0/6/160037/160037-cyberpunk-cyberpunk_2077-cyberpunk_2020-adam_badowski-cd_projekt-x750.jpg', TRUE),
-(2, 2, 'The Legend of Zelda: Breath of the Wild', 'Juego de aventura épica en un Hyrule de mundo abierto', 49.99, 50,'https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1065/b_white/f_auto/q_auto/ncom/software/switch/70010000000025/7137262b5a64d921e193653f8aa0b722925abc5680380ca0e18a5cfd91697f58', TRUE),
-(3, 3, 'Final Fantasy XV', 'RPG de fantasía con un mundo expansivo y una historia cautivadora', 39.99, 75,'https://upload.wikimedia.org/wikipedia/en/5/5a/FF_XV_cover_art.jpg', TRUE),
-(4, 4, 'Los Sims 4', 'Simulador de vida donde controlas personas virtuales', 29.99, 150, 'https://upload.wikimedia.org/wikipedia/en/7/7f/Sims4_Rebrand.png', TRUE),
-(5, 5, 'FIFA 21', 'Simulador de fútbol con equipos y jugadores reales', 59.99, 120, 'https://answers.ea.com/t5/image/serverpage/image-id/119426iFE5EC699EE73690A/image-size/original?v=v2&px=-1', TRUE),
-(6, 6, 'Resident Evil Village', 'Juego de horror ambientado en un pueblo misterioso', 54.99, 0,'https://i.blogs.es/c01beb/20200615-resident-evil-village-1591981440118_v2_1524x804/1366_2000.webp', FALSE);
+(1, 1, 'Cyberpunk 2077', 'Juego de acción y aventura en un mundo abierto en Night City', 59000.0, 100, 'https://img2.wallspic.com/previews/7/3/0/0/6/160037/160037-cyberpunk-cyberpunk_2077-cyberpunk_2020-adam_badowski-cd_projekt-x750.jpg', TRUE),
+(2, 2, 'The Legend of Zelda: Breath of the Wild', 'Juego de aventura épica en un Hyrule de mundo abierto', 49000.0, 50, 'https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1065/b_white/f_auto/q_auto/ncom/software/switch/70010000000025/7137262b5a64d921e193653f8aa0b722925abc5680380ca0e18a5cfd91697f58', TRUE),
+(3, 3, 'Final Fantasy XV', 'RPG de fantasía con un mundo expansivo y una historia cautivadora', 39000.0, 75, 'https://upload.wikimedia.org/wikipedia/en/5/5a/FF_XV_cover_art.jpg', TRUE),
+(4, 4, 'Los Sims 4', 'Simulador de vida donde controlas personas virtuales', 29000.0, 150, 'https://upload.wikimedia.org/wikipedia/en/7/7f/Sims4_Rebrand.png', TRUE),
+(5, 5, 'FIFA 21', 'Simulador de fútbol con equipos y jugadores reales', 59000.0, 120, 'https://answers.ea.com/t5/image/serverpage/image-id/119426iFE5EC699EE73690A/image-size/original?v=v2&px=-1', TRUE),
+(6, 6, 'Resident Evil Village', 'Juego de horror ambientado en un pueblo misterioso', 55000.0, 0, 'https://i.blogs.es/c01beb/20200615-resident-evil-village-1591981440118_v2_1524x804/1366_2000.webp', FALSE),
+(7, 1, 'God of War Ragnarok', 'Juego de acción y aventura en la mitología nórdica', 70000.0, 80, 'https://upload.wikimedia.org/wikipedia/en/e/ee/God_of_War_Ragnar%C3%B6k_cover.jpg', TRUE),
+(8, 2, 'Hollow Knight', 'Juego de plataformas metroidvania ambientado en un mundo subterráneo', 29000.0, 60, 'https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Hollow_Knight_first_cover_art.webp/274px-Hollow_Knight_first_cover_art.webp.png', TRUE),
+(9, 3, 'Elden Ring', 'RPG de acción en un vasto mundo abierto creado por George R.R. Martin', 75000.0, 90, 'https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg', TRUE),
+(10, 4, 'Animal Crossing: New Horizons', 'Simulador de vida en una isla desierta', 35000.0, 100, 'https://upload.wikimedia.org/wikipedia/en/1/1f/Animal_Crossing_New_Horizons.jpg', TRUE),
+(11, 5, 'NBA 2K23', 'Simulador de baloncesto con los mejores equipos y jugadores', 65000.0, 40, 'https://upload.wikimedia.org/wikipedia/en/d/d7/NBA_2K23_cover_art.jpg', TRUE),
+(12, 6, 'The Last of Us Part II', 'Juego de aventura y acción en un mundo post-apocalíptico', 60000.0, 50, 'https://upload.wikimedia.org/wikipedia/en/4/4f/TLOU_P2_Box_Art_2.png', TRUE),
+(13, 1, 'Assassin’s Creed Valhalla', 'Juego de acción y aventura basado en la era vikinga', 62000.0, 70, 'https://upload.wikimedia.org/wikipedia/en/f/ff/Assassin%27s_Creed_Valhalla_cover.jpg', TRUE),
+(14, 2, 'Stardew Valley', 'Simulador de granja con elementos de aventura y RPG', 25000.0, 150, 'https://upload.wikimedia.org/wikipedia/en/f/fd/Logo_of_Stardew_Valley.png', TRUE),
+(15, 3, 'Dark Souls III', 'RPG de acción conocido por su dificultad y ambientación oscura', 40000.0, 30, 'https://upload.wikimedia.org/wikipedia/en/b/bb/Dark_souls_3_cover_art.jpg', TRUE);
 
 CREATE TABLE usuario (
   id_usuario INT NOT NULL AUTO_INCREMENT,
@@ -122,7 +131,7 @@ INSERT INTO ruta (patron, rol_name) VALUES
 ('/facturar/carrito', 'USER'),
 ('/payment/**', 'USER'),
 ('/pruebas/**', 'USER'),
-('/favoritos/**', 'USER'),
+('/favoritos/**', 'USER'),,
 ('/producto/resenas', 'USER'),
 ('/producto/formulario', 'USER'),
 ('/producto/resenas/**', 'USER'),
