@@ -1,38 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml">
 <head th:replace="~{layout/plantilla :: head}">
-    <title>TiendadeVideojuegos</title>        
+    <title>Tienda de Videojuegos</title>   
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería Chart.js -->
 </head>
 <body>
     <header th:replace="~{layout/plantilla :: header}"/>
-    
-    <!-- Contenido Principal -->
-    <main>
-        <section>
+
+<main>
+
+    <section sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR')">
+        <h2>Panel de Gestión</h2>
+        <p>Esta sección está disponible para administradores y vendedores.</p>
+    </section>
+
+    <section sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR')">
+        <h2>Métricas rápidas</h2>
+        <div style="display: flex; gap: 20px;">
+            <div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; text-align: center;">
+                <h3>Total de Ventas</h3>
+                <p>$5,250</p>
+            </div>
+            <div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; text-align: center;">
+                <h3>Productos en Inventario</h3>
+                <p>320</p>
+            </div>
+            <div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; text-align: center;">
+                <h3>Usuarios Registrados</h3>
+                <p>1,200</p>
+            </div>
+        </div>
+    </section>
+
+    <section sec:authorize="hasRole('VENDEDOR')">
+        <h2>Productos con Bajo Inventario</h2>
+        <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Juego Aventura Épica</td>
+                    <td>5</td>
+                    <td><button>Reabastecer</button></td>
+                </tr>
+                <tr>
+                    <td>Juego de Carreras</td>
+                    <td>2</td>
+                    <td><button>Reabastecer</button></td>
+                </tr>
+                <tr>
+                    <td>Juego de Estrategia</td>
+                    <td>1</td>
+                    <td><button>Reabastecer</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section sec:authorize="hasRole('USER')">
+        <h2>Explora nuestro catálogo</h2>
+         <section>
             <h1>Descubre un mundo de aventuras</h1>
             <p>Encuentra los mejores videojuegos para todas las plataformas y disfruta de las mejores ofertas.</p>
         </section>
-        
-        <!-- Iframe de Tienda de Videojuegos -->
-        <section>
-            <h2>Explora nuestro catálogo</h2>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/2KROCZ1q4OE?si=19lZ6SYaIRAil6MO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <p>Visita nuestra tienda para ver más detalles sobre los videojuegos más recientes y en oferta.</p>
-        </section>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/2KROCZ1q4OE"
+                title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+        <p>Compra los mejores videojuegos y aprovecha nuestras ofertas exclusivas.</p>
+        <h2>Ofertas exclusivas para ti</h2>
+        <p>¡Gracias por ser parte de nuestra comunidad! Aprovecha estas ofertas diseñadas solo para nuestros usuarios registrados:</p>
+        <ul>
+            <li>Descuento del 20% en tu próxima compra.</li>
+            <li>Envío gratuito para pedidos mayores a $50.</li>
+            <li>Acceso anticipado a preventas.</li>
+        </ul>
+    </section>
+</main>
 
-        <!-- Información de Ventas -->
-        <section>
-            <h2>Información de Venta de Videojuegos</h2>
-            <p>Ofrecemos videojuegos en formatos físico y digital para todas las plataformas. Compra hoy y recibe
-               beneficios exclusivos como descuentos, contenido adicional, y mucho más.</p>
-            <ul>
-                <li>Descuentos especiales para miembros registrados.</li>
-                <li>Envíos gratis en compras superiores a $50.</li>
-                <li>Preventa de los juegos más esperados del año.</li>
-            </ul>
-        </section>
-    </main>
-    
-    <footer th:replace="~{layout/plantilla :: footer}"/>          
+    <footer th:replace="~{layout/plantilla :: footer}"/>
 </body>
 </html>
+

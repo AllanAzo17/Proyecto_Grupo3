@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
+    <head th:replace="~{layout/plantilla :: head}">
+    <meta charset="UTF-8">
+    <title>Agregar Reseña</title>
     <style>
         .review-form-container {
             width: 100%;
@@ -77,22 +79,23 @@
     </style>
 </head>
 <body>
-    <div class="review-form-container">
-        <h2>Agregar Reseña para [[${producto.descripcion}]]</h2>
-        <form th:action="@{/producto/resenas/guardar}" th:object="${resena}" method="post">
-            <input type="hidden" th:name="idProducto" th:value="${producto.idProducto}" />
+          <header th:replace="~{layout/plantilla :: header}"/>
+    <h2>Agregar Reseña para [[${producto.descripcion}]]</h2>
+    <form th:action="@{/producto/resenas/guardar}" th:object="${resena}" method="post">
+        <input type="hidden" th:name="idProducto" th:value="${producto.idProducto}" />
+        
+        <label>Calificación:</label>
+        <input type="number" th:field="*{calificacion}" min="1" max="5" required />
 
-            <label>Calificación:</label>
-            <input type="number" th:field="*{calificacion}" min="1" max="5" required />
-
-            <label>Comentario:</label>
-            <textarea th:field="*{comentario}" required></textarea>
-
-            <button type="submit">Guardar Reseña</button>
-        </form>
-    </div>
+        <label>Comentario:</label>
+        <textarea th:field="*{comentario}" required></textarea>
+        
+        <button type="submit">Guardar Reseña</button>
+    </form>
+    <footer th:replace="~{layout/plantilla :: footer}"/>
 </body>
 </html>
+
 
 
 

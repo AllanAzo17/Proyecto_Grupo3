@@ -42,4 +42,10 @@ public List<Resena> getResenas() {
         resenaDao.deleteById(idResena);
     }
     
+        @Override
+    @Transactional(readOnly = true)
+    public Double obtenerPromedioCalificacionPorProducto(Long idProducto) {
+        return resenaDao.obtenerPromedioCalificacionPorProducto(idProducto);
+    }
+    
 }

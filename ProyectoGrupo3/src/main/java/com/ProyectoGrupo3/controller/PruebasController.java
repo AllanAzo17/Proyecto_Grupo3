@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.ProyectoGrupo3.Service.ProductoService;
 
-
-
 @Controller
 @RequestMapping("/pruebas")
 public class PruebasController {

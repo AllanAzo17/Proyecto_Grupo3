@@ -17,4 +17,6 @@ public interface ResenaService {
     
     public void delete(Long idResena);
     
+    public  Double obtenerPromedioCalificacionPorProducto(Long idProducto);
+    
 }
