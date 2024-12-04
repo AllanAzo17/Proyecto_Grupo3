@@ -134,79 +134,71 @@
             </div>
         </section>
 
-<section th:fragment="editarUsuario">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <form method="POST"
-                  th:action="@{/usuario/guardar}" th:object="${usuario}"
-                  class="was-validated"
-                  enctype="multipart/form-data">
-                <!-- Campo oculto para el ID del usuario -->
-                <input type="hidden" name="idUsuario" th:field="*{idUsuario}" />
-                
-                <section th:replace="~{usuario/fragmentos :: botonesEditar}"/>
-                <div id="details">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>[[#{accion.actualizar}]]</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <!-- Campo de solo lectura para el username -->
-                                        <div class="mb-3">
-                                            <label for="username">Nombre de Usuario</label>
-                                            <input type="text" class="form-control" 
-                                                   name="username" th:field="*{username}" 
-                                                   readonly="true">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="nombre">[[#{usuario.nombre}]]</label>
-                                            <input type="text" class="form-control" 
-                                                   name="nombre" th:field="*{nombre}"
-                                                   required="true">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="apellidos">[[#{usuario.apellidos}]]</label>
-                                            <input type="text" class="form-control" 
-                                                   name="apellidos" th:field="*{apellidos}"
-                                                   required="true">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="email">[[#{usuario.correo}]]</label>
-                                            <input type="email" class="form-control" 
-                                                   name="correo" th:field="*{correo}"
-                                                   required="true">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="telefono">[[#{usuario.telefono}]]</label>
-                                            <input type="tel" class="form-control" 
-                                                   name="telefono" th:field="*{telefono}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="imagen">[[#{usuario.imagen}]]</label>
-                                            <input class="form-control" type="file" name="imagenFile"
-                                                   onchange="readURL(this);" />
-                                            <img id="blah" th:src="@{${usuario.rutaImagen}}" alt="Imagen del usuario" height="200"/>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="password">[[#{usuario.contrasena}]]</label>
-                                            <input type="password" class="form-control"
-                                                   name="password" th:field="*{password}"
-                                                   placeholder="Dejar vacío si no desea cambiar">
+        <section th:fragment="editarUsuario">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <form method="POST"
+                          th:action="@{/usuario/guardar}" th:object="${usuario}"
+                          class="was-validated"
+                          enctype="multipart/form-data">
+                        <!-- Campo oculto para el ID del usuario -->
+                        <input type="hidden" name="idUsuario" th:field="*{idUsuario}" />
+
+                        <section th:replace="~{usuario/fragmentos :: botonesEditar}"/>
+                        <div id="details">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>[[#{accion.actualizar}]]</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <!-- Campo oculto para el username -->
+                                                <input type="hidden" name="username" th:field="*{username}" />
+
+                                                <div class="mb-3">
+                                                    <label for="nombre">[[#{usuario.nombre}]]</label>
+                                                    <input type="text" class="form-control" 
+                                                           name="nombre" th:field="*{nombre}"
+                                                           required="true">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="apellidos">[[#{usuario.apellidos}]]</label>
+                                                    <input type="text" class="form-control" 
+                                                           name="apellidos" th:field="*{apellidos}"
+                                                           required="true">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email">[[#{usuario.correo}]]</label>
+                                                    <input type="email" class="form-control" 
+                                                           name="correo" th:field="*{correo}"
+                                                           required="true">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="telefono">[[#{usuario.telefono}]]</label>
+                                                    <input type="tel" class="form-control" 
+                                                           name="telefono" th:field="*{telefono}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="imagen">[[#{usuario.imagen}]]</label>
+                                                    <input class="form-control" type="file" name="imagenFile"
+                                                           onchange="readURL(this);" />
+                                                    <img id="blah" th:src="@{${usuario.rutaImagen}}" alt="Imagen del usuario" height="200"/>
+                                                </div>
+
+                                                <!-- Campo oculto para la contraseña -->
+                                                <input type="hidden" name="password" th:field="*{password}" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-            </form>
-        </div>
-    </div>
-</section>
-
+                    </form>
+                </div>
+            </div>
+        </section>
 
 
         <!-- 5 Fragmento que se utiliza en el fragmento anterior -->
