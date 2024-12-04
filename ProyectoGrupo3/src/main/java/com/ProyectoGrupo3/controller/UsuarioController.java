@@ -69,16 +69,13 @@ public class UsuarioController {
     }
     
     @GetMapping("/perfil")
-public String mostrarPerfil(Model model, Principal principal) {
-    // Obtener el nombre del usuario autenticado
-    String username = principal.getName(); // Devuelve el username del usuario autenticado
-    
-    // Buscar al usuario por su username
-    Usuario usuario = usuarioService.getUsuarioPorUsername(username);
-    
-    // Añadir el usuario al modelo para la vista
-    model.addAttribute("usuario", usuario);
-    return "/usuario/perfil"; // Retorna la vista "perfil"
-}
+    public String mostrarPerfil(Usuario usuario, Model model) {
+        // Buscar al usuario por su información directamente
+        usuario = usuarioService.getUsuarioPorUsername(usuario.getUsername());
+ 
+        // Añadir el usuario al modelo para la vista
+        model.addAttribute("usuario", usuario);
+        return "/usuario/perfil"; // Retorna la vista "perfil"
+    }
 
 }
