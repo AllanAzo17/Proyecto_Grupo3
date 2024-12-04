@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org">
    <head th:replace="~{layout/plantilla :: head}">
     <title>Mi Perfil</title>
     <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -24,16 +25,10 @@
         <div class="card">
             <div class="card-body">
                 <form th:action="@{/usuario/guardar}" th:method="post" th:object="${usuario}" enctype="multipart/form-data">
-                    <!-- Campo oculto para el ID del usuario -->
                     <input type="hidden" name="idUsuario" th:field="*{idUsuario}" />
                     
-                    <!-- Campo de solo lectura para el username -->
-                    <div class="mb-3">
-                        <label for="username">Nombre de Usuario</label>
-                        <input type="text" class="form-control" 
-                               name="username" th:field="*{username}" 
-                               readonly="true">
-                    </div>
+                    <input type="hidden" name="username" th:field="*{username}" />
+
                     <div class="mb-3">
                         <label for="nombre">Nombre</label>
                         <input type="text" class="form-control" 
@@ -63,12 +58,9 @@
                                onchange="readURL(this);" />
                         <img id="blah" th:src="@{${usuario.rutaImagen}}" alt="Imagen del perfil" height="200"/>
                     </div>
-                    <div class="mb-3">
-                        <label for="password">Contraseña</label>
-                        <input type="password" class="form-control"
-                               name="password" th:field="*{password}" 
-                               placeholder="Dejar en blanco para no cambiarla">
-                    </div>
+
+                    <input type="hidden" name="password" th:field="*{password}" />
+
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
@@ -79,4 +71,5 @@
         <footer th:replace="~{layout/plantilla :: footer}"/>
 </body>
 </html>
+
 

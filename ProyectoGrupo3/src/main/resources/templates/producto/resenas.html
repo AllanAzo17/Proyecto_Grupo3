@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head th:replace="~{layout/plantilla :: head}">
-    <meta charset="UTF-8">
-    <title>Reseñas de [[${producto.descripcion}]]</title>
-</head>
-<body>
-      <header th:replace="~{layout/plantilla :: header}"/>
-    <h2>Reseñas de [[${producto.descripcion}]]</h2>
-    
-     <!-- Mostrar el promedio de calificación -->
-    <p>Promedio de Calificación: <span th:text="${promedioCalificacion}"></span></p>
+        <meta charset="UTF-8">
+            <title>Reseñas de [[${producto.descripcion}]]</title>
+    </head>
+    <body>
+        <header th:replace="~{layout/plantilla :: header}"/>
+        <h2>Reseñas de [[${producto.descripcion}]]</h2>
 
-    <!-- Botón para abrir el formulario de agregar una nueva reseña -->
-    <a th:href="@{/producto/resenas/agregar/} + ${producto.idProducto}" class="btn btn-primary">Agregar Reseña</a>
+        <!-- Mostrar el promedio de calificación -->
+        <p>Promedio de Calificación: <span th:text="${promedioCalificacion}"></span></p>
 
-    <!-- Lista de reseñas -->
-    <div th:if="${resenas != null and !resenas.empty}">
-        <div th:each="resena : ${resenas}" class="card mb-3">
-            <div class="card-body">
-                <h5>Calificación: <span th:text="${resena.calificacion}">5</span></h5>
-                <p th:text="${resena.comentario}">Comentario de la reseña...</p>
-                <p><small th:text="${#dates.format(resena.fecha, 'dd/MM/yyyy')}">Fecha de la reseña</small></p>
+        <!-- Botón para abrir el formulario de agregar una nueva reseña -->
+        <a th:href="@{/producto/resenas/agregar/} + ${producto.idProducto}" class="btn btn-primary">Agregar Reseña</a>
 
-                <!-- Botón para eliminar la reseña -->
-                <a th:href="@{/producto/resenas/eliminar/} + ${resena.idResena} + '?idProducto=' + ${producto.idProducto}" 
-                   class="btn btn-danger">Eliminar Reseña</a>
+        <!-- Lista de reseñas -->
+        <div th:if="${resenas != null and !resenas.empty}">
+            <div th:each="resena : ${resenas}" class="card mb-3">
+                <div class="card-body">
+                    <h5>Calificación: <span th:text="${resena.calificacion}">5</span></h5>
+                    <p th:text="${resena.comentario}">Comentario de la reseña...</p>
+                    <p><small th:text="${#dates.format(resena.fecha, 'dd/MM/yyyy')}">Fecha de la reseña</small></p>
+
+                    <!-- Botón para eliminar la reseña -->
+                    <a th:href="@{/producto/resenas/eliminar/} + ${resena.idResena} + '?idProducto=' + ${producto.idProducto}" 
+                       class="btn btn-danger">Eliminar Reseña</a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Mensaje si no hay reseñas -->
-    <div th:if="${resenas == null or resenas.empty}" class="alert alert-info">
-        <p>No hay reseñas para este producto.</p>
-    </div>
+        <!-- Mensaje si no hay reseñas -->
+        <div th:if="${resenas == null or resenas.empty}" class="alert alert-info">
+            <p>No hay reseñas para este producto.</p>
+        </div>
 
-    <!-- Botón para volver a la lista de productos -->
-    <div class="text-center mt-4">
-        <a th:href="@{/producto/listado}" class="btn btn-primary">Volver a Productos</a>
-    </div>
-    <footer th:replace="~{layout/plantilla :: footer}"/>
-</body>
+        <!-- Botón para volver a la lista de productos -->
+        <div class="text-center mt-4">
+            <a th:href="@{/producto/listado}" class="btn btn-primary">Volver a Productos</a>
+        </div>
+        <footer th:replace="~{layout/plantilla :: footer}"/>
+    </body>
 </html>
 
 
