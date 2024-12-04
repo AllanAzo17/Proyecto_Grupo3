@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org">
+   <head th:replace="~{layout/plantilla :: head}">
+    <title>Mi Perfil</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script>
+        // Función para mostrar la vista previa de la imagen
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('blah').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</head>
+<body>
+    <header th:replace="~{layout/plantilla :: header}"/>
+    <div class="container mt-5">
+        <h1 class="mb-4">Mi Perfil</h1>
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/usuario/guardar}" th:method="post" th:object="${usuario}" enctype="multipart/form-data">
+                    <input type="hidden" name="idUsuario" th:field="*{idUsuario}" />
+                    
+                    <input type="hidden" name="username" th:field="*{username}" />
+
+                    <div class="mb-3">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" 
+                               name="nombre" th:field="*{nombre}" 
+                               required="true">
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" class="form-control" 
+                               name="apellidos" th:field="*{apellidos}" 
+                               required="true">
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo">Correo Electrónico</label>
+                        <input type="email" class="form-control" 
+                               name="correo" th:field="*{correo}" 
+                               required="true">
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" class="form-control" 
+                               name="telefono" th:field="*{telefono}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagen">Imagen de Perfil</label>
+                        <input class="form-control" type="file" name="imagenFile"
+                               onchange="readURL(this);" />
+                        <img id="blah" th:src="@{${usuario.rutaImagen}}" alt="Imagen del perfil" height="200"/>
+                    </div>
+
+                    <input type="hidden" name="password" th:field="*{password}" />
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <footer th:replace="~{layout/plantilla :: footer}"/>
+</body>
+</html>
+
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Fragmento para listado de favoritos -->
+    <section th:fragment="listadoFavoritos">
+        <div class="container">
+            <h1>Mis Favoritos</h1>
+            <!-- Tabla para mostrar los productos favoritos -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Fecha Agregado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iteración de los favoritos -->
+                    <tr th:each="favorito : ${favoritos}">
+                        <td th:text="${favorito.producto.descripcion}"></td>
+                        <td th:text="${favorito.producto.precio}"></td>
+                        <td th:text="${favorito.fechaAgregado}"></td>
+                        <td>
+                            <!-- Botón para eliminar de favoritos -->
+                            <form th:action="@{/favoritos/eliminar/{idFavorito}(idFavorito=${favorito.idFavorito})}" 
+                                  method="post">
+                                <button type="submit" class="btn btn-outline-danger">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Si la lista está vacía, mostrar un mensaje -->
+            <div th:if="${favoritos.isEmpty()}">
+                <p>No tienes productos en tu lista de favoritos.</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

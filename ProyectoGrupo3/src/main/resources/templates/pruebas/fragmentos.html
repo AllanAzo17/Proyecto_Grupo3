@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-    
     <body>
         <!-- 1 Sección principal para mostrar la informaccion de las categorias -->
         <section th:fragment="categoriasTabs" id="categorias">
@@ -24,34 +23,25 @@
 
          <!-- 2 Sección principal para mostrar la informaccion de la entidad producto -->
         <section th:fragment="listadoProductos" id="productos">
-    <div class="row row-cols-4">
-        <div class="col mb-4" th:each="p : ${productos}">
-            <div class="card h-100">
-                <figure>
-                    <img th:src="${p.rutaImagen}" class="card-img-top" alt="Imagen del producto" height="200"/>
-                    <figcaption>¢[[${p.precio}]] ([[${p.existencias}]])</figcaption>
-                </figure>
-                <div class="card-header">
-                    <h5 class="card-title">[[${p.descripcion}]]</h5>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">[[${p.detalle}]]</p>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <!-- Botón Ver Detalles -->
-                    <a th:href="@{/producto/detalle/}+${p.idProducto}" class="btn btn-info btn-sm">
-                        <i class="fas fa-eye"></i> Ver Detalles
-                    </a>
-                    <!-- Botón Ver Reseñas -->
-                    <a th:href="@{/producto/resenas/}+${p.idProducto}" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-comments"></i> Ver Reseñas
-                    </a>
+            <div class="row row-cols-4">
+                <div class="card" th:each="p : ${productos}">
+                    <figure><img th:src="${p.rutaImagen}" 
+                                 class="card-img-top" alt="..."
+                                 height="200"/>
+                        <figcaption>[[${p.precio}+' ('+${p.existencias}+')']]
+                        </figcaption>
+                    </figure>
+                    <div class="card-header">
+                        <h4 class="card-title">[[${p.descripcion}]]</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">[[${p.detalle}]]</p>                    
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
 
     </body>
 </html>
+
