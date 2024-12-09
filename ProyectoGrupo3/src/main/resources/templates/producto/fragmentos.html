@@ -117,7 +117,7 @@
                                     <tbody>
                                         <!-- Productos visibles para ADMIN y USER -->
                                         <tr th:each="producto, contador : ${productos}" 
-                                            th:if="${#authorization.expression('hasRole(''ADMIN'')') or producto.activo}" 
+                                            th:if="${#authorization.expression('hasRole(''ADMIN'')') or (producto.activo and producto.existencias > 0)}" 
                                             class="align-middle">
                                             <td class="text-center">[[${contador.count}]]</td>
                                             <!-- Imagen del producto -->
@@ -200,7 +200,7 @@
 
 <!-- 4 Fragmento que se utiliza en la página modifca.html -->
 <section th:fragment="editarProducto">
-    <div class="row">
+    <v class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <form method="POST"

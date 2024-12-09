@@ -8,9 +8,10 @@ import com.ProyectoGrupo3.domain.Producto;
 import com.ProyectoGrupo3.Service.CategoriaService;
 import com.ProyectoGrupo3.Service.ProductoService;
 import com.ProyectoGrupo3.Service.ResenaService;
+import com.ProyectoGrupo3.Service.UsuarioService;
 import com.ProyectoGrupo3.Service.impl.FirebaseStorageServiceImpl;
 import com.ProyectoGrupo3.domain.Resena;
-import java.util.Date;
+import com.ProyectoGrupo3.domain.Usuario;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,8 @@ public class ProductoController {
     private CategoriaService categoriaService;
     @Autowired
     private ResenaService resenaService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping("/listado")
     private String listado(Model model) {
@@ -54,7 +57,7 @@ public class ProductoController {
     public String verDetallesProducto(@PathVariable Long idProducto, Model model) {
         Producto producto = productoService.getProductoById(idProducto);
         model.addAttribute("producto", producto);
-        return "producto/detalle"; // Vista de solo lectura para los detalles del producto
+        return "producto/detalle";
     }
 
     @Autowired
@@ -94,21 +97,16 @@ public class ProductoController {
 
     @GetMapping("/resenas/{idProducto}")
     public String verResenas(@PathVariable("idProducto") Long idProducto, Model model) {
-        // Obtiene el producto por su ID
         Producto producto = productoService.getProductoById(idProducto);
 
-        // Obtiene la lista de reseñas asociadas al producto
         List<Resena> resenas = producto.getResenas();
 
-        // Calcula el promedio de calificación
         Double promedioCalificacion = resenaService.obtenerPromedioCalificacionPorProducto(idProducto);
 
-        // Agrega el producto, las reseñas y el promedio al modelo
         model.addAttribute("producto", producto);
         model.addAttribute("resenas", resenas);
         model.addAttribute("promedioCalificacion", promedioCalificacion != null ? promedioCalificacion : "No hay reseñas");
 
-        // Retorna la vista donde se mostrarán las reseñas del producto
         return "producto/resenas";
     }
 
@@ -122,10 +120,11 @@ public class ProductoController {
 
     @PostMapping("/resenas/guardar")
     public String guardarResena(Resena resena, @RequestParam Long idProducto) {
-        Producto producto = productoService.getProductoById(idProducto);
-        resena.setProducto(producto);
-        resena.setFecha(new Date());
-        resenaService.save(resena);
+        try {
+            resenaService.save(resena, idProducto);
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            return "redirect:/error";
+        }
         return "redirect:/producto/resenas/" + idProducto;
     }
 

@@ -4,54 +4,38 @@
  */
 package com.ProyectoGrupo3.Service.impl;
 
-import com.ProyectoGrupo3.dao.FavoritoDao;
 import com.ProyectoGrupo3.Service.FavoritoService;
-import com.ProyectoGrupo3.Service.ProductoService;
 import com.ProyectoGrupo3.domain.Favorito;
-import com.ProyectoGrupo3.domain.Producto;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FavoritoServiceImpl implements FavoritoService {
 
-    @Autowired
-    private FavoritoDao favoritoDao;
-
-    @Autowired
-    private ProductoService productoService;
+    @Override
+    public List<Favorito> gets() {
+        return listaFavoritos;
+    }
 
     @Override
-    public void agregarAFavoritos(Long idProducto) {
-        Producto producto = productoService.getProductoById(idProducto);
-        if (producto == null) {
-            throw new IllegalArgumentException("El producto con ID " + idProducto + " no existe.");
+    public void save(Favorito favorito) {
+        if (!listaFavoritos.stream()
+            .anyMatch(f -> Objects.equals(f.getIdProducto(), favorito.getIdProducto()))) {
+            listaFavoritos.add(favorito);
         }
-
-        Favorito favorito = new Favorito();
-        favorito.setProducto(producto);
-        favorito.setFechaAgregado(LocalDateTime.now());
-        favoritoDao.save(favorito); // Ajustado el uso de FavoritoDao
     }
 
     @Override
-    public void eliminarDeFavoritos(Long idFavorito) {
-        if (!favoritoDao.existsById(idFavorito)) {
-            throw new IllegalArgumentException("El favorito con ID " + idFavorito + " no existe.");
-        }
-        favoritoDao.deleteById(idFavorito); // Ajustado el uso de FavoritoDao
+    public void delete(Favorito favorito) {
+        listaFavoritos.removeIf(f -> Objects.equals(f.getIdProducto(), favorito.getIdProducto()));
     }
 
     @Override
-    public List<Favorito> listarFavoritos() {
-        return favoritoDao.findAll(); // Ajustado el uso de FavoritoDao
-    }
-
-    @Override
-    public Favorito obtenerPorId(Long idFavorito) {
-        return favoritoDao.findById(idFavorito)
-                .orElseThrow(() -> new IllegalArgumentException("El favorito con ID " + idFavorito + " no existe."));
+    public Favorito get(Favorito favorito) {
+        return listaFavoritos.stream()
+            .filter(f -> Objects.equals(f.getIdProducto(), favorito.getIdProducto()))
+            .findFirst()
+            .orElse(null);
     }
 }

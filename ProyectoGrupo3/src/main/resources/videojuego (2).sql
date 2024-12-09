@@ -113,6 +113,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 INSERT INTO ruta (patron, rol_name) VALUES 
 ('/producto/nuevo', 'ADMIN'),
 ('/producto/guardar', 'ADMIN'),
+('/producto/reporte/excel', 'ADMIN'),
 ('/producto/modificar/**', 'ADMIN'),
 ('/producto/eliminar/**','ADMIN'),
 ('/categoria/nuevo', 'ADMIN'),
@@ -126,12 +127,12 @@ INSERT INTO ruta (patron, rol_name) VALUES
 ('/ruta/**', 'ADMIN'),
 ('/producto/listado', 'VENDEDOR'),
 ('/categoria/listado', 'VENDEDOR'),
-('/pruebas/**', 'VENDEDOR'),
 ('/reportes/**', 'VENDEDOR'),
 ('/facturar/carrito', 'USER'),
 ('/payment/**', 'USER'),
-('/pruebas/**', 'USER'),
-('/favoritos/**', 'USER'),,
+('/pruebas/listado', 'USER'),
+('/pruebas/listado/**', 'USER'),
+('/favoritos/**', 'USER'),
 ('/producto/resenas', 'USER'),
 ('/producto/formulario', 'USER'),
 ('/producto/resenas/**', 'USER'),
@@ -153,7 +154,8 @@ INSERT INTO ruta_permit (patron) VALUES
 ('/js/**'),
 ('/favoritos/**'),
 ('/webjars/**'),
-('/usuario/perfil');
+('/usuario/perfil'),
+('/usuario/perfil/guardar');
 
 CREATE TABLE resena (
   id_resena INT NOT NULL AUTO_INCREMENT,
@@ -167,9 +169,6 @@ CREATE TABLE resena (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-INSERT INTO resena (id_resena, id_producto, calificacion, comentario, fecha) VALUES
-(2, 1, 5, 'Juego increíble, altamente recomendado.', '2024-11-03 12:00:00'),
-(1, 2, 4, 'Muy dificil pero buen juego.', '2024-11-04 14:45:00');
 
 create table factura (
   id_factura INT NOT NULL AUTO_INCREMENT,
@@ -183,10 +182,6 @@ create table factura (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-INSERT INTO factura (id_usuario, fecha, total, estado) VALUES
-(1, '2024-11-01', 559.98, 1),
-(2, '2024-11-02', 79.98, 1);
-
 create table venta (
   id_venta INT NOT NULL AUTO_INCREMENT,
   id_factura INT NOT NULL,
@@ -196,68 +191,8 @@ create table venta (
   PRIMARY KEY (id_venta),
   foreign key fk_ventas_factura (id_factura) references factura(id_factura),
   foreign key fk_ventas_producto (id_producto) references producto(id_producto) 
-);
-
-INSERT INTO venta (id_factura, id_producto, precio, cantidad) VALUES
-(1, 1, 499.99, 1),
-(1, 3, 59.99, 1),
-(2, 2, 59.99, 1),
-(2, 4, 19.99, 1);
-
-
-CREATE TABLE favorito (
-  id_favorito INT NOT NULL AUTO_INCREMENT,
-  id_producto INT NOT NULL,
-  fecha_agregado DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id_favorito),
-  FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
-);
-
-INSERT INTO favorito (id_favorito, id_producto, fecha_agregado) VALUES
-(1, 2, '2024-11-01 10:00:00'), 
-(2, 1, '2024-11-02 15:30:00'); 
-
-
-CREATE TABLE tiquete (
-  id_tiquete INT NOT NULL AUTO_INCREMENT,
-  titulo VARCHAR(255) NOT NULL,
-  descripcion TEXT NOT NULL,
-  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  estado VARCHAR(20) NOT NULL DEFAULT 'Pendiente', -- "Pendiente", "En Proceso", "Resuelto"
-  respuesta TEXT,
-  usuario_id INT NOT NULL,
-  admin_id INT,
-  PRIMARY KEY (id_tiquete),
-  FOREIGN KEY (usuario_id) REFERENCES usuario(id_usuario),
-  FOREIGN KEY (admin_id) REFERENCES usuario(id_usuario)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-INSERT INTO tiquete (titulo, descripcion, estado, usuario_id) VALUES 
-('Problema con la descarga', 'No puedo descargar el producto comprado', 'Pendiente', 1),
-('Reembolso', 'Solicito un reembolso para un producto', 'En Proceso', 2);
 
--- Ejemplo de actualización para que un administrador responda y cambie el estado
-UPDATE tiquete 
-SET respuesta = 'Tu reembolso ha sido procesado', estado = 'Resuelto', admin_id = 1 
-WHERE id_tiquete = 2;
-
-
-CREATE TABLE constante (
-    id_constante INT AUTO_INCREMENT NOT NULL,
-    atributo VARCHAR(25) NOT NULL,
-    valor VARCHAR(150) NOT NULL,
-	PRIMARY KEY (id_constante))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-INSERT INTO constante (atributo,valor) VALUES 
-('dominio','localhost'),
-('certificado','c:/cert'),
-('dolar','520.75'),
-('paypal.client-id','AUjOjw5Q1I0QLTYjbvRS0j4Amd8xrUU2yL9UYyb3TOTcrazzd3G3lYRc6o7g9rOyZkfWEj2wxxDi0aRz'),
-('paypal.client-secret','EMdb08VRlo8Vusd_f4aAHRdTE14ujnV9mCYPovSmXCquLjzWd_EbTrRrNdYrF1-C4D4o-57wvua3YD2u'),
-('paypal.mode','sandbox'),
-('urlPaypalCancel','http://localhost/payment/cancel'),
-('urlPaypalSuccess','http://localhost/payment/success');
