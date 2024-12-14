@@ -6,40 +6,49 @@
     <section th:fragment="listadoFavoritos">
         <div class="container">
             <h1>Mis Favoritos</h1>
-            <!-- Tabla para mostrar los productos favoritos -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Fecha Agregado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Iteración de los favoritos -->
-                    <tr th:each="favorito : ${favoritos}">
-                        <td th:text="${favorito.producto.descripcion}"></td>
-                        <td th:text="${favorito.producto.precio}"></td>
-                        <td th:text="${favorito.fechaAgregado}"></td>
-                        <td>
+            <div class="row row-cols-3" th:if="${favoritos != null and !favoritos.empty}">
+                <!-- Iteración de los favoritos -->
+                <div class="col mb-4" th:each="favorito : ${favoritos}">
+                    <div class="card h-100">
+                        <!-- Imagen del producto -->
+                        <img class="card-img-top" th:src="@{${favorito.rutaImagen}}" alt="Imagen del Producto">
+                        <div class="card-body">
+                            <!-- Título del producto -->
+                            <h5 class="card-title" th:text="${favorito.descripcion}"></h5>
+                            <!-- Precio del producto -->
+                            <p class="card-text">
+                                Precio: <span th:text="${favorito.precio}"></span> ₡
+                            </p>
+                            <!-- Fecha en que se agregó a favoritos -->
+                            <p class="card-text">
+                                Fecha Agregado: <span th:text="${favorito.fechaAgregado}"></span>
+                            </p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
                             <!-- Botón para eliminar de favoritos -->
-                            <form th:action="@{/favoritos/eliminar/{idFavorito}(idFavorito=${favorito.idFavorito})}" 
-                                  method="post">
-                                <button type="submit" class="btn btn-outline-danger">
-                                    Eliminar
+                            <form th:action="@{/favoritos/eliminar/{idFavorito}(idFavorito=${favorito.idProducto})}" 
+                                  method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Eliminar
                                 </button>
                             </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
+                            <!-- Botón para pasar al carrito -->
+                            <form th:action="@{/carrito/agregarDesdeFavoritos/{idProducto}(idProducto=${favorito.idProducto})}" 
+                                  method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-cart-plus"></i> Pasar al Carrito
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Si la lista está vacía, mostrar un mensaje -->
-            <div th:if="${favoritos.isEmpty()}">
+            <div th:if="${favoritos == null or favoritos.empty}" class="text-center mt-4">
                 <p>No tienes productos en tu lista de favoritos.</p>
             </div>
         </div>
     </section>
 </body>
 </html>
+
