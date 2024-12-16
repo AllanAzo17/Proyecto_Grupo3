@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <section th:fragment="listadoTiquetes" id="tiquetes">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card shadow">
+                            <div class="card-header bg-primary text-white">
+                                <h4 class="mb-0">[[#{tiquete.listado}]]</h4>
+                            </div>
+
+                            <form method="POST" th:action="@{/tiquete/filtrarEstado}" class="p-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <label for="estado" class="form-label">[[#{tiquete.filtrarPorEstado}]]</label>
+                                        <select class="form-select" name="estado">
+                                            <option value="NUEVO" th:selected="${estadoSeleccionado == 'NUEVO'}">[[#{estado.NUEVO}]]</option>
+                                            <option value="PROGRESO" th:selected="${estadoSeleccionado == 'PROGRESO'}">[[#{estado.PROGRESO}]]</option>
+                                            <option value="RESUELTO" th:selected="${estadoSeleccionado == 'RESUELTO'}">[[#{estado.RESUELTO}]]</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-info">
+                                            <i class="fas fa-filter"></i> [[#{tiquete.aplicarFiltro}]]
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Botón para crear nuevo tiquete (solo USER) -->
+                            <div class="d-flex justify-content-end p-3" sec:authorize="hasRole('USER')">
+                                <a th:href="@{/tiquete/nuevo}" class="btn btn-primary btn-block">
+                                    <i class="fas fa-plus"></i> Crear Tiquete
+                                </a>
+                            </div>
+
+                            <!-- Tabla de tiquetes -->
+                            <div th:if="${tiquetes != null and !tiquetes.empty}">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-dark text-center">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>[[#{tiquete.usuarioDatos}]]</th>
+                                            <th>[[#{tiquete.descripcionProblema}]]</th>
+                                            <th>[[#{tiquete.estado}]]</th>
+                                            <th>[[#{tiquete.descripcionSolucion}]]</th>
+                                            <th sec:authorize="hasRole('ADMIN')">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="tiquete, contador : ${tiquetes}">
+                                            <td class="text-center">[[${contador.count}]]</td>
+                                            <!-- Mostrar solución como 'Pendiente' si está vacía -->
+                                            <td th:text="${tiquete.descripcionSolucion != null ? tiquete.descripcionSolucion : 'Pendiente'}"></td>
+                                            <!-- Acciones solo para ADMIN -->
+                                            <td sec:authorize="hasRole('ADMIN')">
+                                                <div class="d-flex justify-content-center gap-2">
+                                                    <a th:href="@{/tiquete/modificar/}+${tiquete.idTiquete}" 
+                                                       class="btn btn-outline-success btn-sm">
+                                                        <i class="fas fa-pencil-alt"></i> Actualizar
+                                                    </a>
+                                                    <a th:href="@{/tiquete/eliminar/}+${tiquete.idTiquete}" 
+                                                       class="btn btn-outline-danger btn-sm">
+                                                        <i class="fas fa-trash"></i> Cerrar
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Mensaje cuando no hay tiquetes -->
+                            <div class="text-center p-2" th:if="${tiquetes == null or tiquetes.empty}">
+                                <span>[[#{lista.vacia}]]</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section th:fragment="editarTiquete">
+            <form th:action="@{/tiquete/guardar}" th:object="${tiquete}" method="POST" class="was-validated">
+
+                <input type="hidden" name="idTiquete" th:field="*{idTiquete}" />
+
+                <div class="mb-3">
+                    <label>[[#{usuario.info}]]</label>
+                    <p>
+                        <strong>[[#{usuario.username}]]:</strong> [[${tiquete.usuario.username}]] <br />
+                        <strong>[[#{usuario.nombre}]]:</strong> [[${tiquete.usuario.nombre}]] [[${tiquete.usuario.apellidos}]] <br />
+                        <strong>[[#{usuario.correo}]]:</strong> [[${tiquete.usuario.correo}]] <br />
+                        <strong>[[#{usuario.telefono}]]:</strong> [[${tiquete.usuario.telefono}]]
+                    </p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="descripcionProblema">[[#{tiquete.descripcionProblema}]]</label>
+                    <textarea class="form-control" name="descripcionProblema" 
+                              th:field="*{descripcionProblema}" 
+                              required></textarea>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="descripcionSolucion">[[#{tiquete.descripcionSolucion}]]</label>
+                    <textarea class="form-control" name="descripcionSolucion" 
+                              th:field="*{descripcionSolucion}" 
+                              th:disabled="${#authorization.expression('hasRole(''USER'')')}" 
+                              required="true"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="estado">[[#{tiquete.estado}]]</label>
+                    <select class="form-control" name="estado" th:field="*{estado}">
+                        <option value="NUEVO" th:selected="${tiquete.estado == 'NUEVO'}">[[#{estado.NUEVO}]]</option>
+                        <option value="PROGRESO" th:selected="${tiquete.estado == 'PROGRESO'}">[[#{estado.PROGRESO}]]</option>
+                        <option value="RESUELTO" th:selected="${tiquete.estado == 'RESUELTO'}">[[#{estado.RESUELTO}]]</option>
+                    </select>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-success" type="submit">[[#{tiquete.guardar}]]</button>
+                    <a th:href="@{/tiquete/listado}" class="btn btn-secondary">[[#{tiquete.cancelar}]]</a>
+                </div>
+            </form>
+        </section>
+
+
+
+        <section th:fragment="crearTiquete">
+            <form th:action="@{/tiquete/guardar}" th:object="${tiquete}" method="POST" class="was-validated">
+                <input type="hidden" th:field="*{idTiquete}" />
+                <input type="hidden" th:field="*{estado}" th:value="'NUEVO'" />
+
+                <div class="mb-3">
+                    <label>[[#{usuario.info}]]</label>
+                    <p>
+                        <strong>[[#{usuario.username}]]:</strong> [[${tiquete.usuario.username}]] <br />
+                        <strong>[[#{usuario.nombre}]]:</strong> [[${tiquete.usuario.nombre}]] [[${tiquete.usuario.apellidos}]] <br />
+                        <strong>[[#{usuario.correo}]]:</strong> [[${tiquete.usuario.correo}]] <br />
+                        <strong>[[#{usuario.telefono}]]:</strong> [[${tiquete.usuario.telefono}]]
+                    </p>
+                </div>
+
+                <!-- Descripción del problema -->
+                <div class="mb-3">
+                    <label for="descripcionProblema">[[#{tiquete.descripcionProblema}]]</label>
+                    <textarea class="form-control" th:field="*{descripcionProblema}" required></textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-success" type="submit">Guardar</button>
+                    <a th:href="@{/tiquete/listado}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </section>
+
+
+    </body>
+</html>

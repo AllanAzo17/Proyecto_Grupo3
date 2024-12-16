@@ -5,13 +5,20 @@
 package com.ProyectoGrupo3.Service;
 
 import com.ProyectoGrupo3.domain.Favorito;
+import java.util.ArrayList;
 import java.util.List;
-    
+
 public interface FavoritoService {
-    void agregarAFavoritos(Long idProducto);
-    void eliminarDeFavoritos(Long idFavorito);
-    List<Favorito> listarFavoritos();
-    Favorito obtenerPorId(Long idFavorito);
+    List<Favorito> listaFavoritos = new ArrayList<>();
+
+    List<Favorito> gets();
+
+    Favorito get(Favorito favorito);
+
+    void delete(Favorito favorito);
+
+    void save(Favorito favorito);
 }
+
 
 

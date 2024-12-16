@@ -35,7 +35,9 @@ create table producto (
   ruta_imagen varchar(1024),
   activo bool,
   PRIMARY KEY (id_producto),
-  foreign key fk_producto_caregoria (id_categoria) references categoria(id_categoria)  
+  foreign key fk_producto_caregoria (id_categoria) references categoria(id_categoria)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE  
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
@@ -72,35 +74,33 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 INSERT INTO usuario (id_usuario, username,password,nombre, apellidos, correo, telefono,ruta_imagen,activo) VALUES 
-(1,'juan','$2a$10$P1.w58XvnaYQUQgZUCk4aO/RTRl8EValluCqB3S2VMLTbRt.tlre.','Juan', 'Castro Mora',    'jcastro@gmail.com',    '4556-8978', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Juan_Diego_Madrigal.jpg/250px-Juan_Diego_Madrigal.jpg',true),
-(2,'rebeca','$2a$10$GkEj.ZzmQa/aEfDmtLIh3udIH5fMphx/35d0EYeqZL5uzgCJ0lQRi','Rebeca',  'Contreras Mora', 'acontreras@gmail.com', '5456-8789','https://upload.wikimedia.org/wikipedia/commons/0/06/Photo_of_Rebeca_Arthur.jpg',true),
-(3,'pedro','$2a$10$koGR7eS22Pv5KdaVJKDcge04ZB53iMiw76.UjHPY.XyVYlYqXnPbO','Pedro', 'Mena Loria',     'lmena@gmail.com',      '7898-8936','https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Eduardo_de_Pedro_2019.jpg/480px-Eduardo_de_Pedro_2019.jpg?20200109230854',true),
-(4,'rosalia','$2a$10$P1.w58XvnaYQUQgZUCk4aO/RTRl8EValluCqB3S2VMLTbRt.tlre.','Rosa', 'Avila Mendez',     'avema@gmail.com',      '1234-8936','https://media.revistavanityfair.es/photos/60e84fd9b710ef1e877f8960/master/w_1600,c_limit/11074.jpg',true),
-(5,'arthur','$2a$10$koGR7eS22Pv5KdaVJKDcge04ZB53iMiw76.UjHPY.XyVYlYqXnPbO', 'Arthur', 'King', 'arthurking@gmail.com', '5678-1234', 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Roger_Clark_-_Great_Philadelphia_Comic_Con.jpg/800px-Roger_Clark_-_Great_Philadelphia_Comic_Con.jpg', true);
+(1,'rosalia','$2a$10$P1.w58XvnaYQUQgZUCk4aO/RTRl8EValluCqB3S2VMLTbRt.tlre.','Rosa', 'Avila Mendez',     'avema@gmail.com',      '1234-8936','https://media.revistavanityfair.es/photos/60e84fd9b710ef1e877f8960/master/w_1600,c_limit/11074.jpg',true),
+(2,'arthur','$2a$10$koGR7eS22Pv5KdaVJKDcge04ZB53iMiw76.UjHPY.XyVYlYqXnPbO', 'Arthur', 'King', 'arthurking@gmail.com', '5678-1234', 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Roger_Clark_-_Great_Philadelphia_Comic_Con.jpg/800px-Roger_Clark_-_Great_Philadelphia_Comic_Con.jpg', true),
+(3,'rebeca','$2a$10$GkEj.ZzmQa/aEfDmtLIh3udIH5fMphx/35d0EYeqZL5uzgCJ0lQRi','Rebeca',  'Contreras Mora', 'acontreras@gmail.com', '5456-8789','https://upload.wikimedia.org/wikipedia/commons/0/06/Photo_of_Rebeca_Arthur.jpg',true);
 
 create table role (  
   rol varchar(20),
   PRIMARY KEY (rol)  
 );
 
-insert into role (rol) values ('ADMIN'), ('VENDEDOR'), ('USER');
+insert into role (rol) values ('ADMIN'), ('USER');
 
 create table rol (
   id_rol INT NOT NULL AUTO_INCREMENT,
   nombre varchar(20),
   id_usuario int,
-  PRIMARY KEY (id_rol)
+  PRIMARY KEY (id_rol),
+  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 insert into rol (id_rol, nombre, id_usuario) values
- (1,'ADMIN',1), (2,'VENDEDOR',1), (3,'USER',1),
- (4,'VENDEDOR',2), (5,'USER',2),
- (6,'USER',3),
- (7,'ADMIN',4), (8,'VENDEDOR',4),
-(9,'USER',5);
-
+(1,'ADMIN',1), 
+(2,'USER',2), 
+(3,'USER',3);
 
 CREATE TABLE ruta (
     id_ruta INT AUTO_INCREMENT NOT NULL,
@@ -110,9 +110,12 @@ CREATE TABLE ruta (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-INSERT INTO ruta (patron, rol_name) VALUES 
+INSERT INTO ruta (patron, rol_name) VALUES
+('/producto/listado', 'ADMIN'),
+('/categoria/listado', 'ADMIN'), 
 ('/producto/nuevo', 'ADMIN'),
 ('/producto/guardar', 'ADMIN'),
+('/producto/reporte/excel', 'ADMIN'),
 ('/producto/modificar/**', 'ADMIN'),
 ('/producto/eliminar/**','ADMIN'),
 ('/categoria/nuevo', 'ADMIN'),
@@ -124,14 +127,11 @@ INSERT INTO ruta (patron, rol_name) VALUES
 ('/role/**', 'ADMIN'),
 ('/usuario_role/**', 'ADMIN'),
 ('/ruta/**', 'ADMIN'),
-('/producto/listado', 'VENDEDOR'),
-('/categoria/listado', 'VENDEDOR'),
-('/pruebas/**', 'VENDEDOR'),
-('/reportes/**', 'VENDEDOR'),
 ('/facturar/carrito', 'USER'),
 ('/payment/**', 'USER'),
-('/pruebas/**', 'USER'),
-('/favoritos/**', 'USER'),,
+('/pruebas/listado', 'USER'),
+('/pruebas/listado/**', 'USER'),
+('/favoritos/**', 'USER'),
 ('/producto/resenas', 'USER'),
 ('/producto/formulario', 'USER'),
 ('/producto/resenas/**', 'USER'),
@@ -153,23 +153,42 @@ INSERT INTO ruta_permit (patron) VALUES
 ('/js/**'),
 ('/favoritos/**'),
 ('/webjars/**'),
-('/usuario/perfil');
+('/tiquete/**'),
+('/usuario/perfil'),
+('/usuario/perfil/guardar');
 
 CREATE TABLE resena (
   id_resena INT NOT NULL AUTO_INCREMENT,
   id_producto INT NOT NULL,
+  id_usuario int NOT NULL,
   calificacion INT NOT NULL CHECK (calificacion BETWEEN 1 AND 5),
   comentario TEXT,
   fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id_resena),
-  FOREIGN KEY fk_producto_resena (id_producto) REFERENCES producto(id_producto)
+  FOREIGN KEY fk_producto_resena (id_producto) REFERENCES producto(id_producto),
+  FOREIGN KEY fk_resena_usuario (id_usuario) references usuario(id_usuario)  
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-INSERT INTO resena (id_resena, id_producto, calificacion, comentario, fecha) VALUES
-(2, 1, 5, 'Juego increíble, altamente recomendado.', '2024-11-03 12:00:00'),
-(1, 2, 4, 'Muy dificil pero buen juego.', '2024-11-04 14:45:00');
+CREATE TABLE tiquete (
+  id_tiquete INT NOT NULL AUTO_INCREMENT,
+  estado varchar(20) NOT NULL,
+  descripcion_problema varchar(200),
+  descripcion_solucion varchar(100),
+  id_usuario INT NOT NULL,
+  PRIMARY KEY (id_tiquete),
+  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+INSERT INTO tiquete (id_tiquete, estado, descripcion_problema, descripcion_solucion, id_usuario)
+VALUES 
+  (1, 'NUEVO', 'El sistema no responde al intentar iniciar sesión.', NULL, 2),
+  (2, 'PROGRESO', 'La aplicación muestra un error al cargar los datos del usuario.', 'Se identificó un problema con la conexión a la base de datos.', 2);
 
 create table factura (
   id_factura INT NOT NULL AUTO_INCREMENT,
@@ -178,14 +197,10 @@ create table factura (
   total double,
   estado int,
   PRIMARY KEY (id_factura),
-  foreign key fk_factura_usuario (id_usuario) references usuario(id_usuario)  
+  foreign key fk_resena_usuario (id_usuario) references usuario(id_usuario)  
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
-
-INSERT INTO factura (id_usuario, fecha, total, estado) VALUES
-(1, '2024-11-01', 559.98, 1),
-(2, '2024-11-02', 79.98, 1);
 
 create table venta (
   id_venta INT NOT NULL AUTO_INCREMENT,
@@ -196,68 +211,6 @@ create table venta (
   PRIMARY KEY (id_venta),
   foreign key fk_ventas_factura (id_factura) references factura(id_factura),
   foreign key fk_ventas_producto (id_producto) references producto(id_producto) 
-);
-
-INSERT INTO venta (id_factura, id_producto, precio, cantidad) VALUES
-(1, 1, 499.99, 1),
-(1, 3, 59.99, 1),
-(2, 2, 59.99, 1),
-(2, 4, 19.99, 1);
-
-
-CREATE TABLE favorito (
-  id_favorito INT NOT NULL AUTO_INCREMENT,
-  id_producto INT NOT NULL,
-  fecha_agregado DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id_favorito),
-  FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
-);
-
-INSERT INTO favorito (id_favorito, id_producto, fecha_agregado) VALUES
-(1, 2, '2024-11-01 10:00:00'), 
-(2, 1, '2024-11-02 15:30:00'); 
-
-
-CREATE TABLE tiquete (
-  id_tiquete INT NOT NULL AUTO_INCREMENT,
-  titulo VARCHAR(255) NOT NULL,
-  descripcion TEXT NOT NULL,
-  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  estado VARCHAR(20) NOT NULL DEFAULT 'Pendiente', -- "Pendiente", "En Proceso", "Resuelto"
-  respuesta TEXT,
-  usuario_id INT NOT NULL,
-  admin_id INT,
-  PRIMARY KEY (id_tiquete),
-  FOREIGN KEY (usuario_id) REFERENCES usuario(id_usuario),
-  FOREIGN KEY (admin_id) REFERENCES usuario(id_usuario)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
-
-INSERT INTO tiquete (titulo, descripcion, estado, usuario_id) VALUES 
-('Problema con la descarga', 'No puedo descargar el producto comprado', 'Pendiente', 1),
-('Reembolso', 'Solicito un reembolso para un producto', 'En Proceso', 2);
-
--- Ejemplo de actualización para que un administrador responda y cambie el estado
-UPDATE tiquete 
-SET respuesta = 'Tu reembolso ha sido procesado', estado = 'Resuelto', admin_id = 1 
-WHERE id_tiquete = 2;
-
-
-CREATE TABLE constante (
-    id_constante INT AUTO_INCREMENT NOT NULL,
-    atributo VARCHAR(25) NOT NULL,
-    valor VARCHAR(150) NOT NULL,
-	PRIMARY KEY (id_constante))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-INSERT INTO constante (atributo,valor) VALUES 
-('dominio','localhost'),
-('certificado','c:/cert'),
-('dolar','520.75'),
-('paypal.client-id','AUjOjw5Q1I0QLTYjbvRS0j4Amd8xrUU2yL9UYyb3TOTcrazzd3G3lYRc6o7g9rOyZkfWEj2wxxDi0aRz'),
-('paypal.client-secret','EMdb08VRlo8Vusd_f4aAHRdTE14ujnV9mCYPovSmXCquLjzWd_EbTrRrNdYrF1-C4D4o-57wvua3YD2u'),
-('paypal.mode','sandbox'),
-('urlPaypalCancel','http://localhost/payment/cancel'),
-('urlPaypalSuccess','http://localhost/payment/success');

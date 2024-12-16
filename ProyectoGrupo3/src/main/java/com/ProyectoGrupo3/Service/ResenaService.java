@@ -13,7 +13,7 @@ public interface ResenaService {
 
     public Resena getResena(Resena resena);
     
-    public void save(Resena resena);
+    public void save(Resena resena, Long idProducto);
     
     public void delete(Long idResena);
     

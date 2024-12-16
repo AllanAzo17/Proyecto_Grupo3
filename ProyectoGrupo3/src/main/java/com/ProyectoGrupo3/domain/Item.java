@@ -9,12 +9,13 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class Favorito extends Producto {
-    private String fechaAgregado; 
+public class Item extends Producto {
+    private int cantidad; //Almacenar la cantidad de items de un producto
 
-    public Favorito() {}
+    public Item() {
+    }
 
-    public Favorito(Producto producto, String fechaAgregado) {
+    public Item(Producto producto) {
         super.setIdProducto(producto.getIdProducto());
         super.setCategoria(producto.getCategoria());
         super.setDescripcion(producto.getDescripcion());
@@ -23,6 +24,6 @@ public class Favorito extends Producto {
         super.setExistencias(producto.getExistencias());
         super.setActivo(producto.isActivo());
         super.setRutaImagen(producto.getRutaImagen());
-        this.fechaAgregado = fechaAgregado;
+        this.cantidad = 0;
     }
 }

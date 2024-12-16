@@ -7,7 +7,6 @@ package com.ProyectoGrupo3.Service;
 import com.ProyectoGrupo3.domain.Producto;
 import java.util.List;
 
-
 public interface ProductoService {
 
     public List<Producto> getProductos(boolean activo);
@@ -19,5 +18,4 @@ public interface ProductoService {
     public void delete(Producto producto);
 
     public Producto getProductoById(Long idProducto);
-
 }

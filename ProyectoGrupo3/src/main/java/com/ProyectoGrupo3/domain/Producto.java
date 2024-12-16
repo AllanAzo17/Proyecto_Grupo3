@@ -29,7 +29,6 @@ public class Producto implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_categoria")
     Categoria categoria;
-
     
     @OneToMany(mappedBy = "producto")
     private List<Resena> resenas;
