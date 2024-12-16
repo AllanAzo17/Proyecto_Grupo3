@@ -8,6 +8,7 @@ import com.ProyectoGrupo3.domain.Producto;
 import com.ProyectoGrupo3.Service.CategoriaService;
 import com.ProyectoGrupo3.Service.ProductoService;
 import com.ProyectoGrupo3.Service.ResenaService;
+import com.ProyectoGrupo3.Service.UsuarioService;
 import com.ProyectoGrupo3.Service.impl.FirebaseStorageServiceImpl;
 import com.ProyectoGrupo3.domain.Resena;
 import java.util.List;

@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class Favorito extends Producto {
-    private String fechaAgregado; 
+    private String fechaAgregado; // Para almacenar la fecha en que se agregó el producto
 
     public Favorito() {}
 

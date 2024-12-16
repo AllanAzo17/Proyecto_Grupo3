@@ -19,6 +19,9 @@ public class FavoritoController {
 
     @Autowired
     private FavoritoService favoritoService;
+    
+    @Autowired
+    private ProductoService productoService;
 
     @Autowired
     private ProductoService productoService;
