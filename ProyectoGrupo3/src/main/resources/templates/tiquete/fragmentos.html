@@ -42,7 +42,6 @@
                                     <thead class="table-dark text-center">
                                         <tr>
                                             <th>#</th>
-                                            <th>[[#{tiquete.usuarioDatos}]]</th>
                                             <th>[[#{tiquete.descripcionProblema}]]</th>
                                             <th>[[#{tiquete.estado}]]</th>
                                             <th>[[#{tiquete.descripcionSolucion}]]</th>
@@ -52,9 +51,9 @@
                                     <tbody>
                                         <tr th:each="tiquete, contador : ${tiquetes}">
                                             <td class="text-center">[[${contador.count}]]</td>
-                                            <!-- Mostrar solución como 'Pendiente' si está vacía -->
+                                            <td th:text="${tiquete.descripcionProblema != null ? tiquete.descripcionProblema : 'Sin descripción'}"></td>
+                                            <td th:text="${tiquete.estado}"></td>
                                             <td th:text="${tiquete.descripcionSolucion != null ? tiquete.descripcionSolucion : 'Pendiente'}"></td>
-                                            <!-- Acciones solo para ADMIN -->
                                             <td sec:authorize="hasRole('ADMIN')">
                                                 <div class="d-flex justify-content-center gap-2">
                                                     <a th:href="@{/tiquete/modificar/}+${tiquete.idTiquete}" 
@@ -69,6 +68,7 @@
                                             </td>
                                         </tr>
                                     </tbody>
+
                                 </table>
                             </div>
 

@@ -23,8 +23,6 @@ public class FavoritoController {
     @Autowired
     private ProductoService productoService;
 
-    @Autowired
-    private ProductoService productoService;
 
     @GetMapping("/favoritos/listado")
     public String listadoFavoritos(Model model) {
