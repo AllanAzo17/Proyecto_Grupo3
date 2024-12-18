@@ -1,88 +1,155 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns="http://www.w3.org/1999/xhtml">
-<head th:replace="~{layout/plantilla :: head}">
-    <title>Tienda de Videojuegos</title>   
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería Chart.js -->
-</head>
-<body>
-    <header th:replace="~{layout/plantilla :: header}"/>
+    <head th:replace="~{layout/plantilla :: head}">
+        <title>Tienda de Videojuegos</title>   
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    </head>
+    <body>
+        <header th:replace="~{layout/plantilla :: header}"/>
 
-<main>
+        <main>
+            <section sec:authorize="hasRole('ADMIN')" class="mb-5">
+                <div class="container">
+                    <!-- Métricas rápidas -->
+                    <h2 class="text-primary mb-4">Métricas rápidas</h2>
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="card-title text-success">Total de Ventas</h3>
+                                    <p class="display-6 fw-bold">$5,250</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="card-title text-info">Productos en Inventario</h3>
+                                    <p class="display-6 fw-bold">320</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h3 class="card-title text-primary">Usuarios Registrados</h3>
+                                    <p class="display-6 fw-bold">1,200</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <section sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR')">
-        <h2>Panel de Gestión</h2>
-        <p>Esta sección está disponible para administradores y vendedores.</p>
-    </section>
+            <section sec:authorize="hasRole('ADMIN')" class="mb-5">
+                <div class="container">
+                    <!-- Productos con Bajo Inventario -->
+                    <h2 class="text-primary mb-4">Productos con Bajo Inventario</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Stock</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Juego Aventura Épica</td>
+                                    <td><span class="badge bg-danger">5</span></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm">
+                                            <i class="fas fa-sync"></i> Reabastecer
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Juego de Carreras</td>
+                                    <td><span class="badge bg-danger">2</span></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm">
+                                            <i class="fas fa-sync"></i> Reabastecer
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Juego de Estrategia</td>
+                                    <td><span class="badge bg-danger">1</span></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm">
+                                            <i class="fas fa-sync"></i> Reabastecer
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
-    <section sec:authorize="hasAnyRole('ADMIN', 'VENDEDOR')">
-        <h2>Métricas rápidas</h2>
-        <div style="display: flex; gap: 20px;">
-            <div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; text-align: center;">
-                <h3>Total de Ventas</h3>
-                <p>$5,250</p>
-            </div>
-            <div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; text-align: center;">
-                <h3>Productos en Inventario</h3>
-                <p>320</p>
-            </div>
-            <div style="border: 1px solid #ccc; padding: 15px; border-radius: 5px; text-align: center;">
-                <h3>Usuarios Registrados</h3>
-                <p>1,200</p>
-            </div>
-        </div>
-    </section>
+            <section sec:authorize="hasRole('USER')" class="container my-5">
+                <div class="text-center mb-4">
+                    <h2 class="display-4 text-primary">Explora nuestro catálogo</h2>
+                    <p class="lead text-muted">Encuentra los mejores videojuegos para todas las plataformas y disfruta de nuestras ofertas exclusivas.</p>
+                </div>
 
-    <section sec:authorize="hasRole('VENDEDOR')">
-        <h2>Productos con Bajo Inventario</h2>
-        <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Stock</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Juego Aventura Épica</td>
-                    <td>5</td>
-                    <td><button>Reabastecer</button></td>
-                </tr>
-                <tr>
-                    <td>Juego de Carreras</td>
-                    <td>2</td>
-                    <td><button>Reabastecer</button></td>
-                </tr>
-                <tr>
-                    <td>Juego de Estrategia</td>
-                    <td>1</td>
-                    <td><button>Reabastecer</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+                <!-- Video y mensaje principal -->
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-6">
+                        <h1 class="text-success">Descubre un mundo de aventuras</h1>
+                        <p class="text-muted">Compra los mejores videojuegos y aprovecha nuestras ofertas exclusivas. ¡Gracias por ser parte de nuestra comunidad!</p>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item rounded shadow" 
+                                    width="560" height="315" 
+                                    src="https://www.youtube.com/embed/2KROCZ1q4OE" 
+                                    title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
 
-    <section sec:authorize="hasRole('USER')">
-        <h2>Explora nuestro catálogo</h2>
-         <section>
-            <h1>Descubre un mundo de aventuras</h1>
-            <p>Encuentra los mejores videojuegos para todas las plataformas y disfruta de las mejores ofertas.</p>
-        </section>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/2KROCZ1q4OE"
-                title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-        <p>Compra los mejores videojuegos y aprovecha nuestras ofertas exclusivas.</p>
-        <h2>Ofertas exclusivas para ti</h2>
-        <p>¡Gracias por ser parte de nuestra comunidad! Aprovecha estas ofertas diseñadas solo para nuestros usuarios registrados:</p>
-        <ul>
-            <li>Descuento del 20% en tu próxima compra.</li>
-            <li>Envío gratuito para pedidos mayores a $50.</li>
-            <li>Acceso anticipado a preventas.</li>
-        </ul>
-    </section>
-</main>
+                <!-- Ofertas exclusivas -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="text-center text-warning mb-4">Ofertas exclusivas para ti</h2>
+                    </div>
 
-    <footer th:replace="~{layout/plantilla :: footer}"/>
-</body>
+                    <!-- Tarjetas de ofertas -->
+                    <div class="col-md-4">
+                        <div class="card border-primary shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-primary">20% de Descuento</h5>
+                                <p class="card-text text-muted">En tu próxima compra, aprovecha esta oportunidad única.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card border-success shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-success">Envío Gratuito</h5>
+                                <p class="card-text text-muted">Para pedidos mayores a 50 mil, tus juegos favoritos llegarán a tu puerta sin costo.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card border-warning shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-warning">Acceso Anticipado</h5>
+                                <p class="card-text text-muted">Sé el primero en acceder a preventas y eventos exclusivos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer th:replace="~{layout/plantilla :: footer}"/>
+    </body>
 </html>
 

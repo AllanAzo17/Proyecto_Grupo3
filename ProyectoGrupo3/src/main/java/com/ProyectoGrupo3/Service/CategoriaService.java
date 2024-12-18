@@ -21,5 +21,7 @@ public interface CategoriaService {
     
     // Se elimina la categoria que tiene el id pasado por parámetro
     public void delete(Categoria categoria);
+   
+
     
 }

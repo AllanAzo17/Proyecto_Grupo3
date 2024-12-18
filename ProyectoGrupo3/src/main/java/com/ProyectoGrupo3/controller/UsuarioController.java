@@ -70,15 +70,36 @@ public class UsuarioController {
     
     @GetMapping("/perfil")
 public String mostrarPerfil(Model model, Principal principal) {
-    // Obtener el nombre del usuario autenticado
-    String username = principal.getName(); // Devuelve el username del usuario autenticado
-    
-    // Buscar al usuario por su username
+    String username = principal.getName();
+ 
     Usuario usuario = usuarioService.getUsuarioPorUsername(username);
     
-    // Añadir el usuario al modelo para la vista
     model.addAttribute("usuario", usuario);
-    return "/usuario/perfil"; // Retorna la vista "perfil"
+    return "/usuario/perfil"; 
 }
+
+@PostMapping("/perfil/guardar")
+public String guardarPerfil(Usuario usuario,
+                            @RequestParam("imagenFile") MultipartFile imagenFile,
+                            Principal principal) {
+
+    String username = principal.getName();
+    Usuario usuarioActual = usuarioService.getUsuarioPorUsername(username);
+
+    usuarioActual.setNombre(usuario.getNombre());
+    usuarioActual.setApellidos(usuario.getApellidos());
+    usuarioActual.setCorreo(usuario.getCorreo());
+
+    if (!imagenFile.isEmpty()) {
+        String rutaImagen = firebaseStorageService.cargaImagen(
+                imagenFile, "usuario", usuarioActual.getIdUsuario());
+        usuarioActual.setRutaImagen(rutaImagen);
+    }
+
+    usuarioService.save(usuarioActual, true);
+
+    return "redirect:/usuario/perfil";
+}
+
 
 }

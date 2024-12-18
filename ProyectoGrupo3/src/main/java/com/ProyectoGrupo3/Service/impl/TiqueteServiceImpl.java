@@ -4,46 +4,42 @@
  */
 package com.ProyectoGrupo3.Service.impl;
 
-import com.ProyectoGrupo3.Service.ProductoService;
-import com.ProyectoGrupo3.dao.ResenaDao;
-import com.ProyectoGrupo3.domain.Resena;
-import com.ProyectoGrupo3.Service.ResenaService;
+import com.ProyectoGrupo3.dao.TiqueteDao;
+import com.ProyectoGrupo3.domain.Tiquete;
+import com.ProyectoGrupo3.Service.TiqueteService;
 import com.ProyectoGrupo3.Service.UsuarioService;
-import com.ProyectoGrupo3.domain.Producto;
 import com.ProyectoGrupo3.domain.Usuario;
-import java.util.Date;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Service
-public class ResenaServiceImpl implements ResenaService {
+public class TiqueteServiceImpl implements TiqueteService {
 
     @Autowired
-    private ResenaDao resenaDao;
-    @Autowired
-    private ProductoService productoService;
+    private TiqueteDao tiqueteDao;
     @Autowired
     private UsuarioService usuarioService;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Resena> getResenas() {
-        return resenaDao.findAll();
+    public List<Tiquete> getTiquetes() {
+        return tiqueteDao.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Resena getResena(Resena resena) {
-        return resenaDao.findById(resena.getIdResena()).orElse(null);
+    public Tiquete getTiquete(Long idTiquete) {
+        return tiqueteDao.findById(idTiquete).orElse(null);
     }
 
     @Override
     @Transactional
-    public void save(Resena resena, Long idProducto) {
+    public void save(Tiquete tiquete) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = (principal instanceof UserDetails)
                 ? ((UserDetails) principal).getUsername()
@@ -58,21 +54,14 @@ public class ResenaServiceImpl implements ResenaService {
             throw new IllegalStateException("Usuario no encontrado.");
         }
 
-        Producto producto = productoService.getProductoById(idProducto);
-        if (producto == null) {
-            throw new IllegalArgumentException("Producto no encontrado.");
-        }
+        tiquete.setUsuario(usuario);
 
-        resena.setUsuario(usuario);
-        resena.setProducto(producto);
-        resena.setFecha(new Date());
-
-        resenaDao.save(resena);
+        tiqueteDao.save(tiquete);
     }
 
     @Override
     @Transactional
-    public void delete(Long idResena) {
+    public void delete(Tiquete tiquete) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = (principal instanceof UserDetails)
                 ? ((UserDetails) principal).getUsername()
@@ -87,20 +76,19 @@ public class ResenaServiceImpl implements ResenaService {
             throw new IllegalStateException("Usuario no encontrado.");
         }
 
-        Resena resena = resenaDao.findById(idResena).orElseThrow(()
-                -> new IllegalArgumentException("Reseña no encontrada."));
+        tiqueteDao.delete(tiquete);
+    }
 
-        if (!resena.getUsuario().getIdUsuario().equals(usuario.getIdUsuario())) {
-            throw new SecurityException("No tienes permiso para eliminar esta reseña.");
-        }
-
-        resenaDao.delete(resena);
+    @Override
+    @Transactional
+    public List<Tiquete> getTiquetesPorUsuario(Long idUsuario) {
+        return tiqueteDao.findByUsuarioIdUsuario(idUsuario);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Double obtenerPromedioCalificacionPorProducto(Long idProducto) {
-        return resenaDao.obtenerPromedioCalificacionPorProducto(idProducto);
+    public List<Tiquete> filtrarPorEstado(String estado) {
+        return tiqueteDao.filtrarPorEstado(estado);
     }
 
 }
